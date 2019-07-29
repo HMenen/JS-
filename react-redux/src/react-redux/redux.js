@@ -13,7 +13,8 @@ const createStore  = function (reducer) {
     let clear = (callback) => {
       let index = lisener.indexOf(callback);
       lisener.splice(index, 1);
-    } 
+    }
+    return clear; 
   }
 
   function dispatch (reducer, action) {
@@ -21,6 +22,12 @@ const createStore  = function (reducer) {
       callback();
     })
     reducer(action);
+  }
+
+  return{
+    getState,
+    subscribe,
+    dispatch
   }
 }
 
