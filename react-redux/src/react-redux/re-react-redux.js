@@ -1,8 +1,8 @@
 import React from 'react'
-import redux from './redux'
+import createStore from './redux'
 
 const Context = React.createContext(null);
-class Provider extends React.Component{
+export class Provider extends React.Component{
   constructor(props) {
     super(props);
     this.store = props.store;
@@ -14,28 +14,32 @@ class Provider extends React.Component{
   }
 
   componentDidMount() {
-    clear = this.store.subscribe(this.setState(this.store.getState()));
+    this.clear = this.store.subscribe(this.setState(this.store.getState()));
   }
 
   componentWillUnmount() {
-    clear();
+    this.clear();
   }
 
   render() {
     return(
-      <Context.Provider>
+      <Context.Provider value={this.state}>
         {this.props.children}
       </Context.Provider>
     )
   }
 }
 
-const connect = (stateMapToProps, dispatchMapToProps) => (Component) => (props) => (
+export const connect = (stateMapToProps = () => {}, dispatchMapToProps = () => {}) => (Component) => (props) => (
  <Context.Consumer>
    {
-     (value) => (
-
-     )
+     (value) => {
+        const stateMap =  stateMapToProps(value.propsState, props);
+        const dispatchMap = dispatchMapToProps(value.dispatch, props);
+        return(
+          <Component {...stateMap} {...dispatchMap} {...props}></Component>
+        )
+      }
    }
  </Context.Consumer>
 )

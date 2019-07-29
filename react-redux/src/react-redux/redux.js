@@ -2,7 +2,6 @@ const createStore  = function (reducer) {
   const INIT = 'INIT';
   const lisener = [];
   let currentState = undefined;
-  let clear = () => {};
 
   function getState () {
     return currentState;
