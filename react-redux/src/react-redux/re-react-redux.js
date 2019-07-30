@@ -23,7 +23,7 @@ export class Provider extends React.Component{
 
   render() {
     return(
-      <Context.Provider value={this.state}>
+      <Context.Provider value={this.store}>
         {this.props.children}
       </Context.Provider>
     )
